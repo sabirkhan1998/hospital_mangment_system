@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCore | Hospital Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-hospital-user"></i>
+            <span>MediCore <b>HMS</b></span>
+        </div>
+        <ul class="nav-links">
+            <li class="active" onclick="showSection('dashboard', this)">
+                <i class="fa-solid fa-chart-line"></i> Dashboard
+            </li>
+            <li onclick="showSection('patients', this)">
+                <i class="fa-solid fa-bed-pulse"></i> Patients
+            </li>
+            <li onclick="showSection('departments', this)">
+                <i class="fa-solid fa-building"></i> Departments
+            </li>
+            <li onclick="showSection('doctors', this)">
+                <i class="fa-solid fa-user-doctor"></i> Doctors
+            </li>
+            <li onclick="showSection('appointments', this)">
+                <i class="fa-solid fa-calendar-check"></i> Appointments
+            </li>
+            <li onclick="showSection('pharmacy', this)">
+                <i class="fa-solid fa-pills"></i> Pharmacy
+            </li>
+            <li onclick="showSection('laboratory', this)">
+                <i class="fa-solid fa-flask-vial"></i> Laboratory
+            </li>
+            <li onclick="showSection('billing', this)">
+                <i class="fa-solid fa-file-invoice-dollar"></i> Billing
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <header class="topbar">
+            <h2 id="page-title">Dashboard Overview</h2>
+            <div class="server-status">
+                <span class="dot" id="status-dot"></span>
+                <span id="status-text">Connecting to API...</span>
+            </div>
+        </header>
+
+        <!-- 1. DASHBOARD SECTION -->
+        <section id="dashboard" class="content-section active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fa-solid fa-bed-pulse"></i></div>
+                    <div>
+                        <h3 id="count-patients">0</h3>
+                        <p>Total Patients</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fa-solid fa-user-doctor"></i></div>
+                    <div>
+                        <h3 id="count-doctors">0</h3>
+                        <p>Active Doctors</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fa-solid fa-calendar-check"></i></div>
+                    <div>
+                        <h3 id="count-appointments">0</h3>
+                        <p>Appointments</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    <div>
+                        <h3 id="count-billing">0</h3>
+                        <p>Total Invoices</p>
+                    </div>
+                </div>
+            </div>
+            <div class="welcome-banner">
+                <h3>Welcome to MediCore Hospital Management System</h3>
+                <p>Select any module from the left menu to manage records, schedule appointments, issue lab tests, or generate bills.</p>
+            </div>
+        </section>
+
+        <!-- 2. PATIENTS SECTION -->
+        <section id="patients" class="content-section">
+            <div class="card form-card">
+                <h3>Register New Patient</h3>
+                <form id="patient-form" class="grid-form">
+                    <input type="text" id="p-name" placeholder="Full Name" required>
+                    <input type="number" id="p-age" placeholder="Age" required>
+                    <input type="text" id="p-phone" placeholder="Phone Number" required>
+                    <select id="p-gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <input type="text" id="p-address" placeholder="Address (Optional)">
+                    <button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Add Patient</button>
+                </form>
+            </div>
+            <div class="card table-card">
+                <h3>Registered Patients</h3>
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Name</th><th>Age</th><th>Gender</th><th>Phone</th><th>Address</th></tr>
+                    </thead>
+                    <tbody id="patients-table"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 3. DEPARTMENTS SECTION -->
+        <section id="departments" class="content-section">
+            <div class="card form-card">
+                <h3>Add Department</h3>
+                <form id="department-form" class="inline-form">
+                    <input type="text" id="dept-name" placeholder="Department Name (e.g., Cardiology)" required>
+                    <button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Add Department</button>
+                </form>
+            </div>
+            <div class="card table-card">
+                <h3>Hospital Departments</h3>
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Department Name</th></tr>
+                    </thead>
+                    <tbody id="departments-table"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 4. DOCTORS SECTION -->
+        <section id="doctors" class="content-section">
+            <div class="card form-card">
+                <h3>Add Doctor</h3>
+                <form id="doctor-form" class="grid-form">
+                    <input type="text" id="doc-name" placeholder="Doctor Name" required>
+                    <input type="number" id="doc-dept-id" placeholder="Department ID" required>
+                    <input type="text" id="doc-phone" placeholder="Phone Number" required>
+                    <input type="text" id="doc-spec" placeholder="Specialization" required>
+                    <button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Add Doctor</button>
+                </form>
+            </div>
+            <div class="card table-card">
+                <h3>Medical Staff</h3>
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Name</th><th>Department ID</th><th>Specialization</th><th>Phone</th></tr>
+                    </thead>
+                    <tbody id="doctors-table"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 5. APPOINTMENTS SECTION -->
+        <section id="appointments" class="content-section">
+            <div class="card form-card">
+                <h3>Book Appointment</h3>
+                <form id="appointment-form" class="grid-form">
+                    <input type="number" id="app-patient-id" placeholder="Patient ID" required>
+                    <input type="number" id="app-doctor-id" placeholder="Doctor ID" required>
+                    <input type="datetime-local" id="app-datetime" required>
+                    <button type="submit" class="btn-primary"><i class="fa-solid fa-calendar-plus"></i> Book</button>
+                </form>
+            </div>
+            <div class="card table-card">
+                <h3>Scheduled Appointments</h3>
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Patient ID</th><th>Doctor ID</th><th>Date & Time</th></tr>
+                    </thead>
+                    <tbody id="appointments-table"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 6. PHARMACY SECTION -->
+        <section id="pharmacy" class="content-section">
+            <div class="card form-card">
+                <h3>Issue Medicine</h3>
+                <form id="pharmacy-form" class="grid-form">
+                    <input type="number" id="phar-patient-id" placeholder="Patient ID" required>
+                    <input type="text" id="phar-med" placeholder="Medicine Name" required>
+                    <input type="number" id="phar-qty" placeholder="Quantity" required>
+                    <input type="number" id="phar-price" placeholder="Price" required>
+                    <button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Issue Medicine</button>
+                </form>
+            </div>
+            <div class="card table-card">
+                <h3>Pharmacy Records</h3>
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Patient ID</th><th>Medicine</th><th>Quantity</th><th>Price</th></tr>
+                    </thead>
+                    <tbody id="pharmacy-table"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 7. LABORATORY SECTION -->
+        <section id="laboratory" class="content-section">
+            <div class="card form-card">
+                <h3>Create Lab Test</h3>
+                <form id="lab-form" class="grid-form">
+                    <input type="number" id="lab-patient-id" placeholder="Patient ID" required>
+                    <input type="text" id="lab-test" placeholder="Test Name (e.g., CBC, X-Ray)" required>
+                    <input type="text" id="lab-result" placeholder="Result (Optional / Pending)">
+                    <input type="number" id="lab-price" placeholder="Test Price" required>
+                    <button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Add Test</button>
+                </form>
+            </div>
+            <div class="card table-card">
+                <h3>Laboratory Reports</h3>
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Patient ID</th><th>Test Name</th><th>Result</th><th>Price</th></tr>
+                    </thead>
+                    <tbody id="laboratory-table"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 8. BILLING SECTION -->
+        <section id="billing" class="content-section">
+            <div class="card form-card">
+                <h3>Generate Invoice</h3>
+                <form id="billing-form" class="grid-form">
+                    <input type="number" id="bill-patient-id" placeholder="Patient ID" required>
+                    <input type="number" id="bill-app-id" placeholder="Appointment ID (Optional)">
+                    <input type="number" id="bill-amount" placeholder="Total Amount" required>
+                    <select id="bill-status" required>
+                        <option value="Unpaid">Unpaid</option>
+                        <option value="Paid">Paid</option>
+                    </select>
+                    <button type="submit" class="btn-primary"><i class="fa-solid fa-file-invoice"></i> Create Bill</button>
+                </form>
+            </div>
+            <div class="card table-card">
+                <h3>Billing & Invoices</h3>
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Patient ID</th><th>Appointment ID</th><th>Amount</th><th>Status</th></tr>
+                    </thead>
+                    <tbody id="billing-table"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <div id="toast" class="toast"></div>
+    <script src="app.js"></script>
+</body>
+</html>
